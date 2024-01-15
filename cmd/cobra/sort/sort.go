@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"goalgo/cmd/cobra/sort/children/insertion"
+	"goalgo/cmd/cobra/sort/children/selection"
 )
 
 func New() *cobra.Command {
@@ -14,6 +15,7 @@ func New() *cobra.Command {
 	}
 
 	cmd.AddCommand(insertion.New())
+	cmd.AddCommand(selection.New())
 
 	return cmd
 }
