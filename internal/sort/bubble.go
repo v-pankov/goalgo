@@ -25,3 +25,29 @@ func Bubble[T constraints.Ordered](values []T) {
 		}
 	}
 }
+
+// Bubble1 is an optimized version of Bubble which skips iterating over elements
+// which are already put in proper position.
+func Bubble1[T constraints.Ordered](values []T) {
+	valuesCount := len(values)
+
+	if valuesCount < 1 {
+		return
+	}
+
+	// 'i' stands for count of elements which were put at the end.
+	// The greatest value is put to the end on each iteration.
+	// Skip this value on next iteration.
+	for i := 0; i < valuesCount-1; i++ {
+		isSorted := true
+		for j := 1; j < valuesCount-i; j++ {
+			if values[j] < values[j-1] {
+				values[j], values[j-1] = values[j-1], values[j]
+				isSorted = false
+			}
+		}
+		if isSorted {
+			break
+		}
+	}
+}
