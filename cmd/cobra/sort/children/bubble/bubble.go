@@ -25,6 +25,8 @@ func New() *cobra.Command {
 				sortFn = sort.Bubble[int]
 			case 1:
 				sortFn = sort.Bubble1[int]
+			case 2:
+				sortFn = sort.Bubble2[int]
 			default:
 				return fmt.Errorf("unsupported bubble sort version [%d]", sortVersion)
 			}

@@ -1,6 +1,8 @@
 package sort
 
-import "golang.org/x/exp/constraints"
+import (
+	"golang.org/x/exp/constraints"
+)
 
 // Bubble implements bubble sort algorithm. It works by iterating over elements
 // over and over until collection becomes sorted. It finds out of order adjacent
@@ -47,6 +49,33 @@ func Bubble1[T constraints.Ordered](values []T) {
 			}
 		}
 		if isSorted {
+			break
+		}
+	}
+}
+
+// Bubble2 is an optimized version of Bubble1 which does not process elements
+// after previous iteration last swapped index.
+func Bubble2[T constraints.Ordered](values []T) {
+	valuesCount := len(values)
+
+	if valuesCount < 1 {
+		return
+	}
+
+	for end := valuesCount; end >= 0; {
+		lastSwappedIdx := -1
+
+		for j := 1; j < end; j++ {
+			if values[j] < values[j-1] {
+				values[j], values[j-1] = values[j-1], values[j]
+				lastSwappedIdx = j
+			}
+		}
+
+		if lastSwappedIdx >= 0 {
+			end = lastSwappedIdx
+		} else {
 			break
 		}
 	}
