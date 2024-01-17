@@ -80,3 +80,73 @@ func Bubble2[T constraints.Ordered](values []T) {
 		}
 	}
 }
+
+// Bubble2 is like Bubble2 but changes sort direction on each iteration (a-la Cocktail sort)
+func Bubble3[T constraints.Ordered](values []T) {
+	valuesCount := len(values)
+
+	if valuesCount < 1 {
+		return
+	}
+
+	var (
+		dirDown  bool
+		leftEnd  int
+		rightEnd = valuesCount
+	)
+
+	for {
+		shakerFn := shakeUp[T]
+		if dirDown {
+			shakerFn = shakeDown[T]
+		}
+
+		done, newEnd := shakerFn(
+			leftEnd, rightEnd, values,
+		)
+
+		if done {
+			break
+		}
+
+		if dirDown {
+			leftEnd = newEnd
+		} else {
+			rightEnd = newEnd
+		}
+
+		dirDown = !dirDown
+	}
+}
+
+func shakeUp[T constraints.Ordered](
+	leftEnd, rightEnd int, values []T,
+) (
+	bool,
+	int,
+) {
+	lastSwappedIndex := -1
+	for i := leftEnd + 1; i < rightEnd; i++ {
+		if values[i] < values[i-1] {
+			values[i], values[i-1] = values[i-1], values[i]
+			lastSwappedIndex = i
+		}
+	}
+	return lastSwappedIndex < 0, lastSwappedIndex
+}
+
+func shakeDown[T constraints.Ordered](
+	leftEnd, rightEnd int, values []T,
+) (
+	bool,
+	int,
+) {
+	lastSwappedIndex := -1
+	for i := rightEnd - 1; i > leftEnd; i-- {
+		if values[i] < values[i-1] {
+			values[i], values[i-1] = values[i-1], values[i]
+			lastSwappedIndex = i
+		}
+	}
+	return lastSwappedIndex < 0, lastSwappedIndex
+}
